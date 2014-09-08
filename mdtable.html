@@ -4,6 +4,8 @@
 <head>
     <link href='http://fonts.googleapis.com/css?family=Oswald:700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" media="screen" href="mdtable.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+    <script src="mdtable_angular.js"></script>
     <title>My Trading Application</title>
 </head>
 <body>
@@ -12,48 +14,18 @@
     <h1><span id="title1">My<br></span><span id="title2">Trading<br></span><span id="title3">Application</span></h1>
 </div>
 
-<div class="panel">
+<div class="panel" ng-app="mdtable">
     <h2 class="panel-title">Market Data View</h2>
-
-
-    <table id="mdtable">
+    <table id="mdtable" ng-controller="mdtableController">
         <tr>
             <th>Asset</th>
-            <th>Bid<br>Size</th>
-            <th>Bid</th>
-            <th>Ask</th>
-            <th>Ask<br>Size</th>
+            <th ng-repeat="column in table.columns">{{column.displayName}}</th>
         </tr>
-        <tr>
-            <td>Stock A</td>
-            <td>100</td>
-            <td>50</td>
-            <td>51</td>
-            <td>90</td>
-        </tr>
-        <tr>
-            <td>Stock B</td>
-            <td>1200</td>
-            <td>93.5</td>
-            <td>94.0</td>
-            <td>1300</td>
-        </tr>
-        <tr>
-            <td>Stock C</td>
-            <td>1000</td>
-            <td>1000</td>
-            <td>1000.5</td>
-            <td>1000</td>
-        </tr>
-        <tr>
-            <td>Stock D</td>
-            <td>3650</td>
-            <td>200</td>
-            <td>204</td>
-            <td>2200</td>
+        <tr ng-repeat="(pkey, row) in table.data">
+            <td>{{pkey}}</td>
+            <td ng-repeat="column in table.columns">{{row[column.columnName]}}</td>
         </tr>
     </table>
-
 </div>
 
 </body>
