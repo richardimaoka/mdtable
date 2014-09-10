@@ -1,7 +1,6 @@
-'use strict';
-
 angular.module('mdtable', []).controller('mdtableController', [
   '$scope', '$interval', function($scope, $interval) {
+    "use strict";
 
     $scope.table = {};
 
@@ -56,8 +55,8 @@ angular.module('mdtable', []).controller('mdtableController', [
 
     // Returning either of case 1 (i==0) stockA data, or case 2 (else) stockA data
     var getData = function(){
-      i = (i + 1) % 2
-      if (i == 0) {
+      i = (i + 1) % 2;
+      if (i === 0) {
         return {
           assetName: 'stockA',
           rowData: {
@@ -78,17 +77,17 @@ angular.module('mdtable', []).controller('mdtableController', [
           }
         };
       }
-    }
+    };
 
     // Function to update $scope.table.data
     var update = function(){
-        var updateData = getData()
-        $scope.table.data[updateData.assetName] = updateData.rowData
+        var updateData = getData();
+        $scope.table.data[updateData.assetName] = updateData.rowData;
     };
 
     // Continuously call the update function every 500 milli seconds
-    $interval(update, 500)
+    $interval(update, 500);
 
   }
 ]);
-;
+
