@@ -11,7 +11,7 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def socket = WebSocket.acceptWithActor[String, String] { request => out => {
+  def socket = WebSocket.acceptWithActor[JsValue, JsValue] { request => out => {
       MdTableActor.props(out)
     }
   }

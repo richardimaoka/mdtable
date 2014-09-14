@@ -1,5 +1,5 @@
 angular.module('mdtable', []).controller('mdtableController', [
-  '$scope', '$interval', function($scope, $interval) {
+  '$scope', function($scope) {
     "use strict";
 
     $scope.table = {};
@@ -19,7 +19,7 @@ angular.module('mdtable', []).controller('mdtableController', [
         displayName: 'Ask Size'
       }
     ];
-    
+
     $scope.table.data = {
       stockA: {
         bidSize: 100,
@@ -47,53 +47,20 @@ angular.module('mdtable', []).controller('mdtableController', [
       }
     };
 
-    /*********************************
-     * Dummy data-refresh part below
-     *********************************/
-
-    var i = 0;
-
-    // Returning either of case 1 (i==0) stockA data, or case 2 (else) stockA data
-    var getData = function(){
-      i = (i + 1) % 2;
-      if (i === 0) {
-        return {
-          assetName: 'stockA',
-          rowData: {
-            bidSize: 100,
-            bid: 50,
-            ask: 51,
-            askSize: 90
-          }
-        };
-      }else{
-        return {
-          assetName: 'stockA',
-          rowData: {
-            bidSize: 30,
-            bid: 51,
-            ask: 52,
-            askSize: 150
-          }
-        };
-      }
-    };
 
     var connection = new WebSocket('ws://localhost:9000/mdtable-websocket')
-    connection.onmessage = function(message){
-      console.log("message received")
-      console.log(message)
-    }
-
-    // Function to update $scope.table.data
-    var update = function(){
-        var updateData = getData();
-        $scope.table.data[updateData.assetName] = updateData.rowData;
+    connection.onmessage = function (message) {
+        $scope.$apply( function() { update(JSON.parse(message.data)); } );
     };
 
-    // Continuously call the update function every 500 milli seconds
-    $interval(update, 500);
+    connection.onerror = function (error) {
+        console.log('WebSocket Error ' + error);
+    };
 
+    // Function to update $scope.table.data
+    var update = function(updateData){
+        $scope.table.data[updateData.assetName] = updateData.rowData;
+    };
   }
 ]);
 
