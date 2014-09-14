@@ -79,6 +79,12 @@ angular.module('mdtable', []).controller('mdtableController', [
       }
     };
 
+    var connection = new WebSocket('ws://localhost:9000/mdtable-websocket')
+    connection.onmessage = function(message){
+      console.log("message received")
+      console.log(message)
+    }
+
     // Function to update $scope.table.data
     var update = function(){
         var updateData = getData();

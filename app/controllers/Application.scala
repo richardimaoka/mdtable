@@ -1,7 +1,9 @@
 package controllers
 
-import play.api._
+import models.MdTableActor
+import play.api.libs.json.JsValue
 import play.api.mvc._
+import play.api.Play.current
 
 object Application extends Controller {
 
@@ -9,4 +11,8 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
+  def socket = WebSocket.acceptWithActor[String, String] { request => out => {
+      MdTableActor.props(out)
+    }
+  }
 }
